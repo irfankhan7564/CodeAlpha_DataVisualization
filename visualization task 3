@@ -1,0 +1,91 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set_style("whitegrid")
+plt.rcParams["figure.figsize"] = (9, 5)
+
+# 1) Bar chart — number of products per category
+plt.figure(figsize=(10, 5))
+sns.barplot(x=category_counts.values, y=category_counts.index, palette="viridis")
+plt.title("Number of Products per Category")
+plt.xlabel("Number of Products")
+plt.ylabel("Category")
+plt.tight_layout()
+plt.savefig("chart_1_products_per_category.png", dpi=150)
+plt.show()
+  
+  # 2) Histogram — price distribution
+plt.figure()
+sns.histplot(df["price"], bins=30, kde=True, color="steelblue")
+plt.title("Distribution of Product Prices")
+plt.xlabel("Price ($)")
+plt.ylabel("Number of Products")
+plt.tight_layout()
+plt.savefig("chart_2_price_distribution.png", dpi=150)
+plt.show()
+
+  # 3) Boxplot — price spread by category (also visually confirms Task 2's IQR outliers)
+plt.figure(figsize=(12, 6))
+order = df.groupby("category")["price"].median().sort_values(ascending=False).index
+sns.boxplot(data=df, x="category", y="price", order=order, palette="coolwarm")
+plt.xticks(rotation=45, ha="right")
+plt.title("Price Distribution by Category")
+plt.xlabel("Category")
+plt.ylabel("Price ($)")
+plt.tight_layout()
+plt.savefig("chart_3_price_by_category_boxplot.png", dpi=150)
+plt.show()
+
+  # 4) Scatter plot — rating vs. number of reviews (is popularity linked to rating?)
+plt.figure()
+sns.scatterplot(data=df, x="reviewCount", y="rating", hue="category", alpha=0.7, legend=False)
+plt.title("Rating vs. Review Count")
+plt.xlabel("Number of Reviews")
+plt.ylabel("Rating (out of 5)")
+plt.tight_layout()
+plt.savefig("chart_4_rating_vs_reviews.png", dpi=150)
+plt.show()
+
+  # 5) Pie chart — in-stock vs out-of-stock share
+plt.figure(figsize=(6, 6))
+stock_counts.plot.pie(autopct="%1.1f%%", labels=["In Stock", "Out of Stock"],
+                       colors=["#4CAF50", "#E53935"], ylabel="")
+plt.title("Stock Availability Share")
+plt.tight_layout()
+plt.savefig("chart_5_stock_status_pie.png", dpi=150)
+plt.show()
+
+  # 6) Bar chart — top 10 vendors by product count
+plt.figure(figsize=(10, 5))
+top_vendors = vendor_counts.head(10)
+sns.barplot(x=top_vendors.values, y=top_vendors.index, palette="magma")
+plt.title("Top 10 Vendors by Number of Products")
+plt.xlabel("Number of Products")
+plt.ylabel("Vendor")
+plt.tight_layout()
+plt.savefig("chart_6_top_vendors.png", dpi=150)
+plt.show()
+
+# 7) Heatmap — correlation between numeric variables
+plt.figure(figsize=(7, 6))
+sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", vmin=-1, vmax=1)
+plt.title("Correlation Heatmap of Numeric Product Attributes")
+plt.tight_layout()
+plt.savefig("chart_7_correlation_heatmap.png", dpi=150)
+plt.show()
+
+# 8) Discount depth by category — where are the biggest discounts?
+discount_by_cat = df[df["is_discounted"]].groupby("category")["discount_pct"].mean().sort_values(ascending=False)
+
+plt.figure(figsize=(10, 5))
+sns.barplot(x=discount_by_cat.values, y=discount_by_cat.index, palette="crest")
+plt.title("Average Discount % by Category (Discounted Items Only)")
+plt.xlabel("Average Discount (%)")
+plt.ylabel("Category")
+plt.tight_layout()
+plt.savefig("chart_8_avg_discount_by_category.png", dpi=150)
+plt.show()
+
+  
+
+  
